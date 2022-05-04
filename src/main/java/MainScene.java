@@ -31,6 +31,8 @@ public class MainScene extends JPanel {
         searchButton.setBounds(Window.WINDOW_WIDTH/2 - 35, textFieldToSearchIP.getY() + (textFieldToSearchIP.getHeight()*2), 100,50);
         searchButton.setVisible(true);
         this.add(searchButton);
+
+        //Click button
         searchButton.addActionListener((event) -> {
             JFrame frame = new JFrame();
             if(textFieldToSearchIP.getText().length() == 0) {
