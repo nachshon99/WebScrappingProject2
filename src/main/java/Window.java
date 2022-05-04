@@ -14,11 +14,12 @@ public class Window extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(null);
         this.setLocationRelativeTo(null);
-        this.setResizable(true);
+        this.setResizable(false);
         this.setTitle("IP Of Countries");
-        this.setVisible(true);
-
         MainScene mainScene = new MainScene(0,0,WINDOW_WIDTH,WINDOW_HEIGHT);
         this.add(mainScene);
+
+        this.setVisible(true);
+
     }
 }

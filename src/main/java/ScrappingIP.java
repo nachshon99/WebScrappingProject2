@@ -4,15 +4,24 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ScrappingIP {
-    public ScrappingIP(){
-        try{
-            Document ipWeb = Jsoup.connect("https://lite.ip2location.com/ip-address-ranges-by-country").get();
-            Elements elements = ipWeb.getElementsByTag("div");
-            //https://lite.ip2location.com/afghanistan-ip-address-ranges
-            System.out.println(elements);
-        }catch(IOException e){
+    public ScrappingIP() {
+        String url = "https://lite.ip2location.com/ip-address-ranges-by-country";
+        List<String> citiesName =  new ArrayList<>();
+
+        try {
+            Document ipWeb = Jsoup.connect(url).get();
+            ArrayList<Element> elements = ipWeb.getElementsByClass("card");
+            for (Element element: elements){
+                citiesName.add(element.text());
+            }
+
+            /*System.out.println(citiesName);*/
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
