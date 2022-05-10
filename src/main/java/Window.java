@@ -15,11 +15,13 @@ public class Window extends JFrame {
         this.setLayout(null);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
-        this.setTitle("IP Of Countries");
+        this.setTitle("Foreign Currency");
         MainScene mainScene = new MainScene(0,0,WINDOW_WIDTH,WINDOW_HEIGHT);
         this.add(mainScene);
 
         this.setVisible(true);
 
     }
+
+
 }
