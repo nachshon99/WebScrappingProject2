@@ -1,196 +1,278 @@
 import javax.swing.*;
 import java.awt.*;
+import java.text.DecimalFormat;
 
 public class MainScene extends JPanel {
 
+    public static final  int INITIALIZE = 0;
+    public static final  int COUNT_POINTS_VALID = 1;
+    public static final  int DUPLICATE_2 = 2;
+    public static final  int DUPLICATE_3 = 3;
     public static final  int OFFSET = 100;
+    public static final int SIZE_FONT = 60;
+    public static final int SIZE_TEXT_FIELD = 24;
+
+    public static final int WIDTH_TITLE = 500;
+    public static final int HEIGHT_TITLE = 100;
+    public static final int X_TITLE = Window.WINDOW_WIDTH/4;
+    public static final int Y_TITLE = Window.WINDOW_HEIGHT/5;
+    public static final int X_BUTTON = Window.WINDOW_WIDTH/10;
+    public static final int Y_BUTTON = Window.WINDOW_HEIGHT/9;
+    public static final int X_CALC_BUTTON = Window.WINDOW_WIDTH/2;
+    public static final int OFFSET_Y_TEXT = 20;
+    public static final int OFFSET_X_TEXT_FIELD = 50;
+
+    public static final int X_TEXT_FIELD = 500;
+    public static final int Y_TEXT_FIELD = 300;
+    public static final int WIDTH_TEXT_FIELD = 150;
+    public static final int HEIGHT_TEXT_FIELD = 50;
+    public static final int MAX_DIGITS = 6;
+    public static final int WIDTH_CREATE_BUTTON = 100;
+    public static final int HEIGHT_CREATE_BUTTON = 50;
+    public static final int X_Y_TEXT_FIELD_ENTER = 300;
+
+    public static final String EUR_USD = "EUR/USD";
+    public static final String GBP_USD = "GBP/USD";
+    public static final String USD_ILS = "USD/ILS";
+    public static final String USD_CHF = "USD/CHF";
+    public static final String USD_JPY = "USD/JPY";
+    public static final String CLEAR_TEXT = "Clear";
+    public static final String CALC_TEXT = "Calc";
+    public static final String EMPTY_TEXT = "";
+    public static final char DOT_CHAR = '.';
+    public static final String DECIMAL_FORMAT = "#.####";
+    public static final String MESSAGE_TEXT = "Invalid input!";
+    public static final String TITLE_MESSAGE_TEXT = "Error";
+    public final String TITLE = "Foreign Currency";
+    public static final String TEXT_CALC_TEXT_FIELD = "Currency Value: ";
+    public static final String TEXT_ENTER_TEXT_FIELD = "Enter Currency Value";
+    public static final String TEXT_ENTER_TEXT = "Enter Currency Value to calculate:";
+    public static final int WINDOW_WIDTH = 800;
+    public static final int WINDOW_HEIGHT = 600;
+
+    private ImageIcon background;
+    private JLabel backgroundLabel;
 
     private JButton eurUsdButton;
-    private JButton usdGbpButton;
+    private JButton gbpUsdButton;
     private JButton usdIlsButton;
-    private JButton rubAudButton;
-    private JButton cadJPYButton;
+    private JButton usdChfButton;
+    private JButton usdJpyButton;
 
+    private JButton calcButton;
     private JButton clearButton;
 
+    private JLabel enterCurrencyValueText;
     private JTextField textFieldToEnterCurrencyValue;
-    private JTextField textFieldToShowCurrencyValue;
+
+    private JLabel calcCurrencyValueText;
     private JTextField textFieldToShowCalcCurrencyValue;
 
-    //Example
-    private String currencyValue = "3.14";
+    private JTextField textFieldToShowCurrencyValue;
+
+    private boolean canUpdate = true;
 
 
     public MainScene(int x, int y, int width, int height){
         //Settings of panel
         this.setBounds(x,y,width,height);
         this.setLayout(null);
-        this.setBackground(Color.CYAN);
+        this.setBackground(null);
         this.setDoubleBuffered(true);
 
         ScrappingCurrencyValue scrappingCurrencyValue = new ScrappingCurrencyValue();
 
-
         //Title Of Page
-        JLabel title = new JLabel("Foreign Currency");
-        title.setFont(new Font("arial", Font.BOLD,50));
-        title.setBounds(Window.WINDOW_WIDTH/3,Window.WINDOW_HEIGHT/5, 500,100);
+        JLabel title = new JLabel(TITLE);
+        title.setFont(new Font("arial", Font.TYPE1_FONT,SIZE_FONT));
+        title.setForeground(Color.YELLOW);
+        title.setBounds(X_TITLE,Y_TITLE, WIDTH_TITLE,HEIGHT_TITLE);
         title.setVisible(true);
         this.add(title);
 
         //Currency exchange pairs buttons
-        eurUsdButton = new JButton("EUR/USD");
-        eurUsdButton.setBounds(Window.WINDOW_WIDTH/10, Window.WINDOW_HEIGHT/9 , 100,50);
+        eurUsdButton = createButton(EUR_USD,X_BUTTON, Y_BUTTON);
         eurUsdButton.setVisible(true);
         this.add(eurUsdButton);
         //Click button
         eurUsdButton.addActionListener((event) -> {
-            usdGbpButton.setVisible(false);
+            gbpUsdButton.setVisible(false);
             usdIlsButton.setVisible(false);
-            rubAudButton.setVisible(false);
-            cadJPYButton.setVisible(false);
-            textFieldToShowCurrencyValue.setText(scrappingCurrencyValue.CURRENCY_VALUES.get(0).toString());
-            enterCurrencyValue(textFieldToShowCurrencyValue,textFieldToEnterCurrencyValue,textFieldToShowCalcCurrencyValue);
+            usdChfButton.setVisible(false);
+            usdJpyButton.setVisible(false);
+            eurUsdButton.setEnabled(false);
+            calcButton.setVisible(true);
+            calcCurrencyValueText.setVisible(true);
+            enterCurrencyValueText.setVisible(true);
+            textFieldToEnterCurrencyValue.setVisible(true);
+            textFieldToShowCalcCurrencyValue.setVisible(true);
+            updateScrapping(scrappingCurrencyValue,EUR_USD);
         });
 
-        usdGbpButton = new JButton("USD/GBP");
-        usdGbpButton.setBounds(eurUsdButton.getX(), eurUsdButton.getY() + OFFSET, 100,50);
-        usdGbpButton.setVisible(true);
-        this.add(usdGbpButton);
+        gbpUsdButton = createButton(GBP_USD,eurUsdButton.getX(), eurUsdButton.getY() + OFFSET);
+        gbpUsdButton.setVisible(true);
+        this.add(gbpUsdButton);
         //Click button
-        usdGbpButton.addActionListener((event) -> {
+        gbpUsdButton.addActionListener((event) -> {
             eurUsdButton.setVisible(false);
             usdIlsButton.setVisible(false);
-            rubAudButton.setVisible(false);
-            cadJPYButton.setVisible(false);
-            textFieldToShowCurrencyValue.setText(scrappingCurrencyValue.CURRENCY_VALUES.get(0).toString());
-            enterCurrencyValue(textFieldToShowCurrencyValue,textFieldToEnterCurrencyValue,textFieldToShowCalcCurrencyValue);
+            usdChfButton.setVisible(false);
+            usdJpyButton.setVisible(false);
+            gbpUsdButton.setEnabled(false);
+            calcButton.setVisible(true);
+            calcCurrencyValueText.setVisible(true);
+            enterCurrencyValueText.setVisible(true);
+            textFieldToEnterCurrencyValue.setVisible(true);
+            textFieldToShowCalcCurrencyValue.setVisible(true);
+            updateScrapping(scrappingCurrencyValue,GBP_USD);
         });
 
-        usdIlsButton = new JButton("USD/ILS");
-        usdIlsButton.setBounds(usdGbpButton.getX(), usdGbpButton.getY() + OFFSET, 100,50);
+        usdIlsButton = createButton(USD_ILS,gbpUsdButton.getX(), gbpUsdButton.getY() + OFFSET);
         usdIlsButton.setVisible(true);
         this.add(usdIlsButton);
         //Click button
         usdIlsButton.addActionListener((event) -> {
             eurUsdButton.setVisible(false);
-            usdGbpButton.setVisible(false);
-            rubAudButton.setVisible(false);
-            cadJPYButton.setVisible(false);
-            textFieldToShowCurrencyValue.setText(currencyValue);
-            if (canClickButton(textFieldToEnterCurrencyValue)) {
-                try {
-                    double sum = Double.parseDouble(textFieldToEnterCurrencyValue.getText()) * Double.parseDouble(textFieldToShowCurrencyValue.getText());
-                    textFieldToShowCalcCurrencyValue.setText(sum + "");
-                }catch (NumberFormatException e){
-                    e.printStackTrace();
-                }
-            }
+            gbpUsdButton.setVisible(false);
+            usdChfButton.setVisible(false);
+            usdJpyButton.setVisible(false);
+            usdIlsButton.setEnabled(false);
+            calcButton.setVisible(true);
+            calcCurrencyValueText.setVisible(true);
+            enterCurrencyValueText.setVisible(true);
+            textFieldToEnterCurrencyValue.setVisible(true);
+            textFieldToShowCalcCurrencyValue.setVisible(true);
+            updateScrapping(scrappingCurrencyValue,USD_ILS);
         });
 
-        rubAudButton = new JButton("RUB/AUD");
-        rubAudButton.setBounds(usdIlsButton.getX(), usdIlsButton.getY() + OFFSET, 100,50);
-        rubAudButton.setVisible(true);
-        this.add(rubAudButton);
+        usdChfButton = createButton(USD_CHF,usdIlsButton.getX(), usdIlsButton.getY() + OFFSET);
+        usdChfButton.setVisible(true);
+        this.add(usdChfButton);
         //Click button
-        rubAudButton.addActionListener((event) -> {
+        usdChfButton.addActionListener((event) -> {
             eurUsdButton.setVisible(false);
-            usdGbpButton.setVisible(false);
+            gbpUsdButton.setVisible(false);
             usdIlsButton.setVisible(false);
-            cadJPYButton.setVisible(false);
-            textFieldToShowCurrencyValue.setText(currencyValue);
-            if (canClickButton(textFieldToEnterCurrencyValue)) {
-                double sum = Double.parseDouble(textFieldToEnterCurrencyValue.getText()) * Double.parseDouble(textFieldToShowCurrencyValue.getText());
-                textFieldToShowCalcCurrencyValue.setText(sum + "");
-            }
+            usdJpyButton.setVisible(false);
+            usdChfButton.setEnabled(false);
+            calcButton.setVisible(true);
+            calcCurrencyValueText.setVisible(true);
+            enterCurrencyValueText.setVisible(true);
+            textFieldToEnterCurrencyValue.setVisible(true);
+            textFieldToShowCalcCurrencyValue.setVisible(true);
+            updateScrapping(scrappingCurrencyValue,USD_CHF);
         });
 
-        cadJPYButton = new JButton("Cad/JPY");
-        cadJPYButton.setBounds(rubAudButton.getX(), rubAudButton.getY() + OFFSET, 100,50);
-        cadJPYButton.setVisible(true);
-        this.add(cadJPYButton);
-        cadJPYButton.addActionListener((event) -> {
+        usdJpyButton = createButton(USD_JPY,usdChfButton.getX(), usdChfButton.getY() + OFFSET);
+        usdJpyButton.setVisible(true);
+        this.add(usdJpyButton);
+        //Click button
+        usdJpyButton.addActionListener((event) -> {
             eurUsdButton.setVisible(false);
-            usdGbpButton.setVisible(false);
+            gbpUsdButton.setVisible(false);
             usdIlsButton.setVisible(false);
-            rubAudButton.setVisible(false);
-            textFieldToShowCurrencyValue.setText(scrappingCurrencyValue.CURRENCY_VALUES.get(2).toString());
-            enterCurrencyValue(textFieldToShowCurrencyValue,textFieldToEnterCurrencyValue,textFieldToShowCalcCurrencyValue);
-
+            usdChfButton.setVisible(false);
+            usdJpyButton.setEnabled(false);
+            calcButton.setVisible(true);
+            calcCurrencyValueText.setVisible(true);
+            enterCurrencyValueText.setVisible(true);
+            textFieldToEnterCurrencyValue.setVisible(true);
+            textFieldToShowCalcCurrencyValue.setVisible(true);
+            updateScrapping(scrappingCurrencyValue,USD_JPY);
         });
 
         //Text Field to show value of calc
-        textFieldToShowCalcCurrencyValue = new JTextField();
-        textFieldToShowCalcCurrencyValue.setBounds(500,300,100,50);
-        textFieldToShowCalcCurrencyValue.setFont(new Font("arial",Font.BOLD,24));
-        textFieldToShowCalcCurrencyValue.setForeground(Color.BLUE);
-        textFieldToShowCalcCurrencyValue.setBackground(Color.lightGray);
-        textFieldToShowCalcCurrencyValue.setVisible(true);
+        textFieldToShowCalcCurrencyValue = createTextField(X_TEXT_FIELD,Y_TEXT_FIELD,WIDTH_TEXT_FIELD,HEIGHT_TEXT_FIELD);
         textFieldToShowCalcCurrencyValue.setEnabled(false);
-        textFieldToShowCalcCurrencyValue.setDisabledTextColor(Color.BLACK);
+        textFieldToShowCalcCurrencyValue.setVisible(false);
         this.add(textFieldToShowCalcCurrencyValue);
 
+        //Text to calcTextField
+        calcCurrencyValueText = new JLabel(TEXT_CALC_TEXT_FIELD);
+        calcCurrencyValueText.setBounds(textFieldToShowCalcCurrencyValue.getX(),
+                textFieldToShowCalcCurrencyValue.getY() + textFieldToShowCalcCurrencyValue.getHeight() - OFFSET_Y_TEXT, WIDTH_TEXT_FIELD+HEIGHT_TEXT_FIELD, HEIGHT_TEXT_FIELD);
+        calcCurrencyValueText.setForeground(Color.YELLOW);
+        calcCurrencyValueText.setVisible(false);
+        this.add(calcCurrencyValueText);
+
         //Text Field to enter Currency value
-        textFieldToEnterCurrencyValue = new JTextField();
-        textFieldToEnterCurrencyValue.setBounds(300,300,100,50);
-        textFieldToEnterCurrencyValue.setFont(new Font("arial",Font.BOLD,24));
-        textFieldToEnterCurrencyValue.setForeground(Color.BLUE);
-        textFieldToEnterCurrencyValue.setBackground(Color.lightGray);
-        textFieldToEnterCurrencyValue.setToolTipText("Enter Currency Value");
-        textFieldToEnterCurrencyValue.setVisible(true);
+        textFieldToEnterCurrencyValue = createTextField(X_Y_TEXT_FIELD_ENTER,X_Y_TEXT_FIELD_ENTER,WIDTH_CREATE_BUTTON,HEIGHT_TEXT_FIELD);
+        textFieldToEnterCurrencyValue.setToolTipText(TEXT_ENTER_TEXT_FIELD);
+        textFieldToEnterCurrencyValue.setVisible(false);
+        textFieldToEnterCurrencyValue.setDocument(new LimitJTextField(MAX_DIGITS));
         this.add(textFieldToEnterCurrencyValue);
+
         //Text to text field
-        JLabel enterCurrencyValueText = new JLabel("Enter Currency Value to calculate:");
-        enterCurrencyValueText.setBounds(textFieldToEnterCurrencyValue.getX() - 50,
-                textFieldToEnterCurrencyValue.getY() + textFieldToEnterCurrencyValue.getHeight() - 20,
-                200,
-                50);
+        enterCurrencyValueText = new JLabel(TEXT_ENTER_TEXT);
+        enterCurrencyValueText.setBounds(textFieldToEnterCurrencyValue.getX() - OFFSET_X_TEXT_FIELD,
+                textFieldToEnterCurrencyValue.getY() + textFieldToEnterCurrencyValue.getHeight() - OFFSET_Y_TEXT, WIDTH_TEXT_FIELD+HEIGHT_TEXT_FIELD, HEIGHT_TEXT_FIELD);
+        enterCurrencyValueText.setForeground(Color.YELLOW);
+        enterCurrencyValueText.setVisible(false);
         this.add(enterCurrencyValueText);
 
+        //Button to calculate
+        calcButton = createButton(CALC_TEXT,X_CALC_BUTTON,
+                textFieldToEnterCurrencyValue.getY() + (textFieldToEnterCurrencyValue.getHeight()*DUPLICATE_2));
+        calcButton.setVisible(false);
+        this.add(calcButton);
+        calcButton.addActionListener((event) -> {
+            calculateEnterCurrencyValue(textFieldToShowCurrencyValue,textFieldToEnterCurrencyValue,textFieldToShowCalcCurrencyValue);
+        });
 
         //Button to clear
-        clearButton = new JButton("Clear");
-        clearButton.setBounds(Window.WINDOW_WIDTH/2, textFieldToEnterCurrencyValue.getY() + (textFieldToEnterCurrencyValue.getHeight()*2), 100,50);
-        clearButton.setVisible(true);
+        clearButton = createButton(CLEAR_TEXT,X_CALC_BUTTON,
+                textFieldToEnterCurrencyValue.getY() + (textFieldToEnterCurrencyValue.getHeight()*DUPLICATE_3));
         this.add(clearButton);
         //Click button
         clearButton.addActionListener((event) -> {
+            usdJpyButton.setEnabled(true);
             eurUsdButton.setVisible(true);
-            usdGbpButton.setVisible(true);
+            eurUsdButton.setEnabled(true);
+            gbpUsdButton.setVisible(true);
+            gbpUsdButton.setEnabled(true);
             usdIlsButton.setVisible(true);
-            rubAudButton.setVisible(true);
-            cadJPYButton.setVisible(true);
-            textFieldToShowCurrencyValue.setText("");
-            textFieldToEnterCurrencyValue.setText("");
-            textFieldToShowCalcCurrencyValue.setText("");
+            usdIlsButton.setEnabled(true);
+            usdChfButton.setVisible(true);
+            usdChfButton.setEnabled(true);
+            usdJpyButton.setVisible(true);
+            enterCurrencyValueText.setVisible(false);
+            calcCurrencyValueText.setVisible(false);
+
+            textFieldToEnterCurrencyValue.setVisible(false);
+            textFieldToShowCalcCurrencyValue.setVisible(false);
+            calcButton.setVisible(false);
+            textFieldToShowCurrencyValue.setText(EMPTY_TEXT);
+            textFieldToEnterCurrencyValue.setText(EMPTY_TEXT);
+            textFieldToShowCalcCurrencyValue.setText(EMPTY_TEXT);
+            canUpdate = false;
         });
 
         //Text Field to show Currency value
-        textFieldToShowCurrencyValue = new JTextField();
-        textFieldToShowCurrencyValue.setBounds(clearButton.getX(), title.getY() + OFFSET,100,50);
-        textFieldToShowCurrencyValue.setFont(new Font("arial",Font.BOLD,24));
-        textFieldToShowCurrencyValue.setForeground(Color.BLUE);
-        textFieldToShowCurrencyValue.setBackground(Color.lightGray);
+        textFieldToShowCurrencyValue = createTextField(clearButton.getX(), title.getY() + OFFSET,WIDTH_TEXT_FIELD - HEIGHT_TEXT_FIELD,HEIGHT_TEXT_FIELD);
         textFieldToShowCurrencyValue.setVisible(true);
         textFieldToShowCurrencyValue.setEnabled(false);
-        textFieldToShowCurrencyValue.setDisabledTextColor(Color.BLACK);
         this.add(textFieldToShowCurrencyValue);
 
-
-
+        background = new ImageIcon(this.getClass().getResource("/CurrencyBackground.jpg"));
+        backgroundLabel = new JLabel(background);
+        backgroundLabel.setSize(WINDOW_WIDTH,WINDOW_HEIGHT);
+        this.add(backgroundLabel);
 
         this.setVisible(true);
     }
 
-    public JTextField createJTextField(){
-        JTextField textField = new JTextField();
-        textField.setBounds(290,300,100,50);
-        textField.setFont(new Font("arial",Font.BOLD,24));
-        textField.setForeground(Color.BLUE);
-        textField.setBackground(Color.lightGray);
-        textField.setToolTipText("Enter Currency Value");
-        textField.setVisible(true);
-        return textField;
+    public void updateScrapping(ScrappingCurrencyValue scrappingCurrencyValue,String typeCurrency){
+        canUpdate = true;
+        new Thread(() -> {
+            while (canUpdate){
+                textFieldToShowCurrencyValue.setText(scrappingCurrencyValue.CURRENCY_VALUES.get(typeCurrency));
+                try {
+                    Thread.sleep(scrappingCurrencyValue.SLEEP_TIME);
+                }catch (InterruptedException e){
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     public boolean canClickButton(JTextField textEnter){
@@ -203,93 +285,52 @@ public class MainScene extends JPanel {
 
     public boolean isValidInput(JTextField textField){
         boolean isValid = true;
+        int countPoint = INITIALIZE;
+        JFrame frame = new JFrame();
         try {
             for (int i = 0; i < textField.getText().length(); i++){
-                if(!Character.isDigit(textField.getText().charAt(i))){
+                if(textField.getText().charAt(i) == DOT_CHAR){
+                    countPoint++;
+                    if(countPoint > COUNT_POINTS_VALID){
+                        isValid = false;
+                        break;
+                    }
+                }else if((!Character.isDigit(textField.getText().charAt(i)) && textField.getText().charAt(i) != DOT_CHAR) || countPoint > COUNT_POINTS_VALID){
                     isValid = false;
                     break;
                 }
+            }
+            if(!isValid){
+                JOptionPane.showConfirmDialog(frame,MESSAGE_TEXT,TITLE_MESSAGE_TEXT, JOptionPane.CLOSED_OPTION);
             }
         }catch (NumberFormatException e){
         }
         return isValid;
     }
 
-    public void enterCurrencyValue(JTextField showTextField, JTextField enterTextField, JTextField calcTextField){
-        if (canClickButton(enterTextField) && isValidInput(enterTextField)) {
+    public void calculateEnterCurrencyValue(JTextField showTextField, JTextField enterTextField, JTextField calcTextField){
+        if (isValidInput(enterTextField) && canClickButton(enterTextField)) {
             try {
                 double sum = (Double.parseDouble(enterTextField.getText())) * (Double.parseDouble(showTextField.getText()));
-                calcTextField.setText(sum + "");
+                sum = Double.parseDouble(new DecimalFormat(DECIMAL_FORMAT).format(sum));
+                calcTextField.setText(sum + EMPTY_TEXT);
             }catch (NumberFormatException e){
             }
         }
     }
+    public static JTextField createTextField( int x, int y, int width, int height){
+        JTextField textField = new JTextField();
+        textField.setBounds(x,y,width,height);
+        textField.setFont(new Font("arial",Font.BOLD, SIZE_TEXT_FIELD));
+        textField.setForeground(Color.BLUE);
+        textField.setBackground(Color.lightGray);
+        textField.setDisabledTextColor(Color.BLACK);
 
-    /*public boolean isValidIP(String str){
-        boolean isValid = false;
-        int countDots = 0;
-        int countNumbers = 0;
-        String saveNumber = "";
-        Queue<Character> numbers = new LinkedList<>();
-        String ip;
-        if(str.length() >= 4 && str.length() <= 15){
-            ip = str;
-            for (int i = 0; i < ip.length();i++){
-                numbers.add(ip.charAt(i));
-                if(ip.charAt(i) == '.'){
-                    countDots++;
-                }
-            }
-            numbers.add('.');
-            if(countDots == 3){
-                do {
-                    if(Character.isDigit(numbers.peek())){
-                        countNumbers++;
-                        saveNumber += numbers.peek();
-                    }else if(numbers.peek() == '.') {
-                        if(countNumbers >= 1 && countNumbers <= 3){
-                            if(isValidNumber(saveNumber) && (Integer.parseInt(saveNumber) >= 0 && Integer.parseInt(saveNumber) <= 255)){
-                                isValid = true;
-                                saveNumber = "";
-                                countNumbers = 0;
-                            }else {
-                                isValid = false;
-                                break;
-                            }
-                        }else {
-                            isValid = false;
-                            break;
-                        }
-                    }
-                    else {
-                        isValid = false;
-                        break;
-                    }
-                    numbers.poll();
-                }while (!numbers.isEmpty());
-            }
-        }
-        return isValid;
+        return textField;
     }
-
-    public boolean isValidNumber(String number){
-        boolean isValid = false;
-        int countZero = 0;
-        for (int i = 0; i < number.length();i++){
-            char currentChar = number.charAt(i);
-            if (Character.isDigit(currentChar)){
-                if(currentChar == '0'){
-                    countZero++;
-                    if(countZero > 1){
-                        isValid = false;
-                        break;
-                    }
-                }
-                isValid = true;
-            }else {
-                isValid = false;
-            }
-        }
-        return isValid;
-    }*/
+    public static JButton createButton(String textButton,int x, int y){
+        JButton button = new JButton(textButton);
+        button.setBounds(x, y, WIDTH_CREATE_BUTTON,HEIGHT_CREATE_BUTTON);
+        return button;
+    }
 }
