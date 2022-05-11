@@ -30,8 +30,6 @@ public class MainScene extends JPanel {
     public static final int WIDTH_CREATE_BUTTON = 100;
     public static final int HEIGHT_CREATE_BUTTON = 50;
     public static final int X_Y_TEXT_FIELD_ENTER = 300;
-    public static final int WINDOW_WIDTH = 800;
-    public static final int WINDOW_HEIGHT = 600;
 
     public static final String EUR_USD = "EUR/USD";
     public static final String GBP_USD = "GBP/USD";
@@ -255,7 +253,7 @@ public class MainScene extends JPanel {
 
         background = new ImageIcon(this.getClass().getResource("/CurrencyBackground.jpg"));
         backgroundLabel = new JLabel(background);
-        backgroundLabel.setSize(WINDOW_WIDTH,WINDOW_HEIGHT);
+        backgroundLabel.setSize(Window.WINDOW_WIDTH,Window.WINDOW_HEIGHT);
         this.add(backgroundLabel);
 
         this.setVisible(true);
