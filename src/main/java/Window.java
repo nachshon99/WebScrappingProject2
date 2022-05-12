@@ -9,20 +9,15 @@ public class Window extends JFrame {
         Window window = new Window();
     }
 
-    public Window(){
-        new Thread(() -> {
-            MainScene mainScene = new MainScene(START_WINDOW,START_WINDOW,WINDOW_WIDTH,WINDOW_HEIGHT);
-            this.add(mainScene);
-            this.setSize(WINDOW_WIDTH,WINDOW_HEIGHT);
-            this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            this.setLayout(null);
-            this.setLocationRelativeTo(null);
-            this.setResizable(false);
-            this.setTitle(mainScene.TITLE);
-            this.setVisible(true);
-        }).start();
-
+    public Window() {
+        this.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLayout(null);
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        MainScene mainScene = new MainScene(START_WINDOW, START_WINDOW, WINDOW_WIDTH, WINDOW_HEIGHT);
+        this.add(mainScene);
+        this.setTitle(mainScene.TITLE);
+        this.setVisible(true);
     }
-
-
 }
