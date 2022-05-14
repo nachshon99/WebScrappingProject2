@@ -47,6 +47,9 @@ public class MainScene extends JPanel {
     public static final String TEXT_CALC_TEXT_FIELD = "Currency Value: ";
     public static final String TEXT_ENTER_TEXT_FIELD = "Enter Currency Value";
     public static final String TEXT_ENTER_TEXT = "Enter Currency Value to calculate:";
+    public static final String SOURCE_JPG = "/CurrencyBackground.jpg";
+    public static final String FONT_NAME = "arial";
+
 
     private ImageIcon background;
     private JLabel backgroundLabel;
@@ -82,7 +85,7 @@ public class MainScene extends JPanel {
 
         //Title Of Page
         JLabel title = new JLabel(TITLE);
-        title.setFont(new Font("arial", Font.TYPE1_FONT,SIZE_FONT));
+        title.setFont(new Font(FONT_NAME, Font.TYPE1_FONT,SIZE_FONT));
         title.setForeground(Color.YELLOW);
         title.setBounds(X_TITLE,Y_TITLE, WIDTH_TITLE,HEIGHT_TITLE);
         title.setVisible(true);
@@ -94,16 +97,8 @@ public class MainScene extends JPanel {
         this.add(eurUsdButton);
         //Click button
         eurUsdButton.addActionListener((event) -> {
-            gbpUsdButton.setVisible(false);
-            usdIlsButton.setVisible(false);
-            usdChfButton.setVisible(false);
-            usdJpyButton.setVisible(false);
-            eurUsdButton.setEnabled(false);
-            calcButton.setVisible(true);
-            calcCurrencyValueText.setVisible(true);
-            enterCurrencyValueText.setVisible(true);
-            textFieldToEnterCurrencyValue.setVisible(true);
-            textFieldToShowCalcCurrencyValue.setVisible(true);
+            updateButtons(eurUsdButton,gbpUsdButton,usdIlsButton,usdChfButton,usdJpyButton);
+            updateVisible(calcButton,calcCurrencyValueText,enterCurrencyValueText,textFieldToEnterCurrencyValue,textFieldToShowCalcCurrencyValue);
             updateScrapping(scrappingCurrencyValue,EUR_USD);
         });
 
@@ -112,16 +107,8 @@ public class MainScene extends JPanel {
         this.add(gbpUsdButton);
         //Click button
         gbpUsdButton.addActionListener((event) -> {
-            eurUsdButton.setVisible(false);
-            usdIlsButton.setVisible(false);
-            usdChfButton.setVisible(false);
-            usdJpyButton.setVisible(false);
-            gbpUsdButton.setEnabled(false);
-            calcButton.setVisible(true);
-            calcCurrencyValueText.setVisible(true);
-            enterCurrencyValueText.setVisible(true);
-            textFieldToEnterCurrencyValue.setVisible(true);
-            textFieldToShowCalcCurrencyValue.setVisible(true);
+            updateButtons(gbpUsdButton,eurUsdButton,usdIlsButton,usdChfButton,usdJpyButton);
+            updateVisible(calcButton,calcCurrencyValueText,enterCurrencyValueText,textFieldToEnterCurrencyValue,textFieldToShowCalcCurrencyValue);
             updateScrapping(scrappingCurrencyValue,GBP_USD);
         });
 
@@ -130,16 +117,8 @@ public class MainScene extends JPanel {
         this.add(usdIlsButton);
         //Click button
         usdIlsButton.addActionListener((event) -> {
-            eurUsdButton.setVisible(false);
-            gbpUsdButton.setVisible(false);
-            usdChfButton.setVisible(false);
-            usdJpyButton.setVisible(false);
-            usdIlsButton.setEnabled(false);
-            calcButton.setVisible(true);
-            calcCurrencyValueText.setVisible(true);
-            enterCurrencyValueText.setVisible(true);
-            textFieldToEnterCurrencyValue.setVisible(true);
-            textFieldToShowCalcCurrencyValue.setVisible(true);
+            updateButtons(usdIlsButton,eurUsdButton,gbpUsdButton,usdChfButton,usdJpyButton);
+            updateVisible(calcButton,calcCurrencyValueText,enterCurrencyValueText,textFieldToEnterCurrencyValue,textFieldToShowCalcCurrencyValue);
             updateScrapping(scrappingCurrencyValue,USD_ILS);
         });
 
@@ -148,16 +127,8 @@ public class MainScene extends JPanel {
         this.add(usdChfButton);
         //Click button
         usdChfButton.addActionListener((event) -> {
-            eurUsdButton.setVisible(false);
-            gbpUsdButton.setVisible(false);
-            usdIlsButton.setVisible(false);
-            usdJpyButton.setVisible(false);
-            usdChfButton.setEnabled(false);
-            calcButton.setVisible(true);
-            calcCurrencyValueText.setVisible(true);
-            enterCurrencyValueText.setVisible(true);
-            textFieldToEnterCurrencyValue.setVisible(true);
-            textFieldToShowCalcCurrencyValue.setVisible(true);
+            updateButtons(usdChfButton,eurUsdButton,gbpUsdButton,usdIlsButton,usdJpyButton);
+            updateVisible(calcButton,calcCurrencyValueText,enterCurrencyValueText,textFieldToEnterCurrencyValue,textFieldToShowCalcCurrencyValue);
             updateScrapping(scrappingCurrencyValue,USD_CHF);
         });
 
@@ -166,16 +137,8 @@ public class MainScene extends JPanel {
         this.add(usdJpyButton);
         //Click button
         usdJpyButton.addActionListener((event) -> {
-            eurUsdButton.setVisible(false);
-            gbpUsdButton.setVisible(false);
-            usdIlsButton.setVisible(false);
-            usdChfButton.setVisible(false);
-            usdJpyButton.setEnabled(false);
-            calcButton.setVisible(true);
-            calcCurrencyValueText.setVisible(true);
-            enterCurrencyValueText.setVisible(true);
-            textFieldToEnterCurrencyValue.setVisible(true);
-            textFieldToShowCalcCurrencyValue.setVisible(true);
+            updateButtons(usdJpyButton,eurUsdButton,gbpUsdButton,usdIlsButton,usdChfButton);
+            updateVisible(calcButton,calcCurrencyValueText,enterCurrencyValueText,textFieldToEnterCurrencyValue,textFieldToShowCalcCurrencyValue);
             updateScrapping(scrappingCurrencyValue,USD_JPY);
         });
 
@@ -186,11 +149,9 @@ public class MainScene extends JPanel {
         this.add(textFieldToShowCalcCurrencyValue);
 
         //Text to calcTextField
-        calcCurrencyValueText = new JLabel(TEXT_CALC_TEXT_FIELD);
-        calcCurrencyValueText.setBounds(textFieldToShowCalcCurrencyValue.getX(),
-                textFieldToShowCalcCurrencyValue.getY() + textFieldToShowCalcCurrencyValue.getHeight() - OFFSET_Y_TEXT, WIDTH_TEXT_FIELD+HEIGHT_TEXT_FIELD, HEIGHT_TEXT_FIELD);
-        calcCurrencyValueText.setForeground(Color.YELLOW);
-        calcCurrencyValueText.setVisible(false);
+        calcCurrencyValueText = createLabel(TEXT_CALC_TEXT_FIELD,textFieldToShowCalcCurrencyValue.getX(),
+                textFieldToShowCalcCurrencyValue.getY() + textFieldToShowCalcCurrencyValue.getHeight() - OFFSET_Y_TEXT,
+                WIDTH_TEXT_FIELD+HEIGHT_TEXT_FIELD, HEIGHT_TEXT_FIELD);
         this.add(calcCurrencyValueText);
 
         //Text Field to enter Currency value
@@ -201,11 +162,9 @@ public class MainScene extends JPanel {
         this.add(textFieldToEnterCurrencyValue);
 
         //Text to text field
-        enterCurrencyValueText = new JLabel(TEXT_ENTER_TEXT);
-        enterCurrencyValueText.setBounds(textFieldToEnterCurrencyValue.getX() - OFFSET_X_TEXT_FIELD,
-                textFieldToEnterCurrencyValue.getY() + textFieldToEnterCurrencyValue.getHeight() - OFFSET_Y_TEXT, WIDTH_TEXT_FIELD+HEIGHT_TEXT_FIELD, HEIGHT_TEXT_FIELD);
-        enterCurrencyValueText.setForeground(Color.YELLOW);
-        enterCurrencyValueText.setVisible(false);
+        enterCurrencyValueText = createLabel(TEXT_ENTER_TEXT,textFieldToEnterCurrencyValue.getX() - OFFSET_X_TEXT_FIELD,
+                textFieldToEnterCurrencyValue.getY() + textFieldToEnterCurrencyValue.getHeight() - OFFSET_Y_TEXT,
+                WIDTH_TEXT_FIELD+HEIGHT_TEXT_FIELD, HEIGHT_TEXT_FIELD);
         this.add(enterCurrencyValueText);
 
         //Button to calculate
@@ -251,7 +210,7 @@ public class MainScene extends JPanel {
         textFieldToShowCurrencyValue.setEnabled(false);
         this.add(textFieldToShowCurrencyValue);
 
-        background = new ImageIcon(this.getClass().getResource("/CurrencyBackground.jpg"));
+        background = new ImageIcon(this.getClass().getResource(SOURCE_JPG));
         backgroundLabel = new JLabel(background);
         backgroundLabel.setSize(Window.WINDOW_WIDTH,Window.WINDOW_HEIGHT);
         this.add(backgroundLabel);
@@ -319,7 +278,7 @@ public class MainScene extends JPanel {
     public static JTextField createTextField( int x, int y, int width, int height){
         JTextField textField = new JTextField();
         textField.setBounds(x,y,width,height);
-        textField.setFont(new Font("arial",Font.BOLD, SIZE_TEXT_FIELD));
+        textField.setFont(new Font(FONT_NAME,Font.BOLD, SIZE_TEXT_FIELD));
         textField.setForeground(Color.BLUE);
         textField.setBackground(Color.lightGray);
         textField.setDisabledTextColor(Color.BLACK);
@@ -331,4 +290,28 @@ public class MainScene extends JPanel {
         button.setBounds(x, y, WIDTH_CREATE_BUTTON,HEIGHT_CREATE_BUTTON);
         return button;
     }
+    public static JLabel createLabel(String nameLabel, int x, int y, int width, int height){
+        JLabel label = new JLabel(nameLabel);
+        label.setBounds(x, y,width,height);
+        label.setForeground(Color.YELLOW);
+        label.setVisible(false);
+        return label;
+    }
+
+    public static void updateVisible(JButton button, JLabel label1, JLabel label2, JTextField textField1, JTextField textField2){
+        button.setVisible(true);
+        label1.setVisible(true);
+        label2.setVisible(true);
+        textField1.setVisible(true);
+        textField2.setVisible(true);
+    }
+    public static void updateButtons(JButton enabledButton, JButton button1, JButton button2, JButton button3, JButton button4){
+        enabledButton.setEnabled(false);
+        button1.setVisible(false);
+        button2.setVisible(false);
+        button3.setVisible(false);
+        button4.setVisible(false);
+    }
+
+
 }
